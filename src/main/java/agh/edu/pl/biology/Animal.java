@@ -3,7 +3,7 @@ package agh.edu.pl.biology;
 import agh.edu.pl.executable.IWorldService;
 import agh.edu.pl.geography.Point;
 
-public class Animal {
+public class Animal implements Comparable<Animal>{
     private final IWorldService iWorldService;
     private final Genom genom;
     private Orientation orientation;
@@ -16,6 +16,10 @@ public class Animal {
         this.orientation = Orientation.values()[genom.getRandomGene()];
         this.location = location;
         this.energy = energy;
+    }
+
+    public Animal(IWorldService iWorldService, Point location, int energy){
+        this(iWorldService, location, energy, new Genom());
     }
 
     public boolean isAlive(){
@@ -38,11 +42,14 @@ public class Animal {
             this.energy -= costEnergy;
         }
         else{
-            iWorldService.removeDeadAnimal(this);
+            iWorldService.reportDeath(this);
         }
     }
 
     public static Animal copulate(Animal animal1, Animal animal2){
+        if(!animal1.canCopulate() || !animal2.canCopulate())
+            return null;
+
         int childEnergy = animal1.energy/4 + animal2.energy/4;
         animal1.energy -= animal1.energy/4;
         animal2.energy -= animal2.energy/4;
@@ -54,5 +61,28 @@ public class Animal {
 
     public Point getLocation() {
         return location;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    private boolean canCopulate(){
+        return energy >= iWorldService.getMinCopulateEnergy();
+    }
+
+    @Override
+    public int compareTo(Animal animal) {
+        return Integer.compare(energy, animal.energy);
+    }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "genom=" + genom +
+                ", orientation=" + orientation +
+                ", location=" + location +
+                ", energy=" + energy +
+                '}';
     }
 }

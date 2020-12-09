@@ -11,5 +11,7 @@ public interface IWorldService {
 
     void changePosition(Point oldPosition, Animal animal);
 
-    void removeDeadAnimal(Animal animal);
+    void reportDeath(Animal animal);
+
+    int getMinCopulateEnergy();
 }

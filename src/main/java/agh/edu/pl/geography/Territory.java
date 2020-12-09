@@ -13,7 +13,7 @@ public class Territory extends Zone{
     }
 
     private boolean isOutsideTheZones(Point point){
-        return zones.stream().noneMatch(zone -> zone.plants.contains(point));
+        return zones.stream().noneMatch(zone -> zone.isInBounds(point));
     }
 
     @Override
@@ -27,8 +27,20 @@ public class Territory extends Zone{
     }
 
     @Override
-    public void randPlants(Set<Point> occupiedFields) {
-        super.randPlants(occupiedFields);
-        zones.forEach(zone -> zone.randPlants(occupiedFields));
+    public void randPlant(Set<Point> occupiedFields) {
+        zones.forEach(zone -> zone.randPlant(occupiedFields));
+        super.randPlant(occupiedFields);
+    }
+
+    @Override
+    public void removePlant(Point point) {
+        super.removePlant(point);
+        zones.forEach(zone -> zone.removePlant(point));
+    }
+
+    public void print(){
+        System.out.println("=======" + getClass());
+        plants.forEach(System.out::println);
+        zones.forEach(Zone::print);
     }
 }

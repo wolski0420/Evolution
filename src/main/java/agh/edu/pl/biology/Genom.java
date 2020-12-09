@@ -89,4 +89,8 @@ public class Genom {
     public int getRandomGene(){
         return genes[random.nextInt(size)];
     }
+
+    public void print(){
+        System.out.println(Arrays.toString(genes));
+    }
 }

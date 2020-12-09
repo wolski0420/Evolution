@@ -34,7 +34,7 @@ public abstract class Zone {
         return point.precedes(rightUpperCorner) && point.follows(leftLowerCorner);
     }
 
-    public void randPlants(Set<Point> occupiedFields) {
+    public void randPlant(Set<Point> occupiedFields) {
         if(occupiedFields.size() == getFieldsNumber()) return;
 
         boolean finish = false;
@@ -49,6 +49,10 @@ public abstract class Zone {
                 }
             }
         }
+    }
+
+    public void removePlant(Point point){
+        plants.remove(point);
     }
 
     protected abstract boolean canPlant(Point point);
