@@ -1,8 +1,11 @@
 package agh.edu.pl.geography;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Territory extends Zone{
     private final List<Zone> zones;
@@ -36,6 +39,18 @@ public class Territory extends Zone{
     public void removePlant(Point point) {
         super.removePlant(point);
         zones.forEach(zone -> zone.removePlant(point));
+    }
+
+    @Override
+    public Set<Point> getOverGrownPositions() {
+        return new HashSet<>(){
+            {
+                addAll(zones.stream()
+                        .flatMap(zone -> zone.getOverGrownPositions().stream())
+                        .collect(Collectors.toSet()));
+                addAll(plants);
+            }
+        };
     }
 
     public void print(){

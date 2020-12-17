@@ -55,6 +55,10 @@ public abstract class Zone {
         plants.remove(point);
     }
 
+    public Set<Point> getOverGrownPositions(){
+        return plants;
+    }
+
     protected abstract boolean canPlant(Point point);
 
     public abstract boolean isOverGrown(Point point);

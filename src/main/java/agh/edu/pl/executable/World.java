@@ -9,10 +9,7 @@ import agh.edu.pl.geography.Zone;
 import agh.edu.pl.observation.Observable;
 import com.google.common.collect.ArrayListMultimap;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class World extends Observable implements IWorldService{
@@ -194,4 +191,27 @@ public class World extends Observable implements IWorldService{
             mapOfAnimals.get(key).forEach(System.out::println);
         });
     }
+
+    // @TODO refactor methods below
+    public int getSizeX(){
+        return map.getLengthX();
+    }
+
+    public int getSizeY(){
+        return map.getLengthY();
+    }
+
+    public Set<Point> getOccupiedPositions(){
+        return mapOfAnimals.keySet();
+    }
+
+    public List<Animal> getAnimalsByPosition(Point position){
+        return mapOfAnimals.get(position);
+    }
+
+    public Set<Point> getOverGrownPositions(){
+        return map.getOverGrownPositions();
+    }
+
+
 }

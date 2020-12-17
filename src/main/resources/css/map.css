@@ -1,0 +1,10 @@
+.grid-pane{
+    -fx-grid-lines-visible: true;
+    -fx-background-color: beige;
+}
+
+.button{
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-padding: 3 20 3 20;
+}
