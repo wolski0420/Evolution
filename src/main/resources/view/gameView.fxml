@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minWidth="800.0" minHeight="740.0"
-            maxWidth="800.0" maxHeight="740.0"
             stylesheets="css/map.css"
             fx:controller="agh.edu.pl.controller.GameController">
     <center>
-        <VBox>
-            <children>
-                <GridPane fx:id="gridPane" styleClass="grid-pane">
-                </GridPane>
-            </children>
-        </VBox>
-    </center>
-    <right>
-        <VBox alignment="TOP_CENTER" prefHeight="700" prefWidth="100.0" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER">
             <opaqueInsets>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </opaqueInsets>
+
             <children>
-                <Button fx:id="executionButton" alignment="TOP_CENTER">
-                    <VBox.margin>
+                <VBox alignment="CENTER">
+                    <GridPane fx:id="gridPane" styleClass="grid-pane">
+                    </GridPane>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <opaqueInsets>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </VBox.margin>
-                </Button>
+                    </opaqueInsets>
+
+                    <children>
+                        <Button fx:id="executionButton">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
             </children>
-        </VBox>
-    </right>
+        </HBox>
+    </center>
 
 </BorderPane>

@@ -1,0 +1,8 @@
+{
+  "width": 8,
+  "height": 8,
+  "startEnergy": 40,
+  "moveEnergy": 1,
+  "plantEnergy": 5,
+  "jungleRatio": 0.5
+}

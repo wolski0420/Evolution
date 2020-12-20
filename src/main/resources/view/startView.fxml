@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="agh.edu.pl.controller.StartController"
+            minWidth="300" minHeight="150"
+            maxWidth="300" maxHeight="150">
+    <center>
+        <VBox alignment="CENTER">
+            <opaqueInsets>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </opaqueInsets>
+            <children>
+                <HBox alignment="CENTER">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </HBox.margin>
+                    <children>
+                        <Label text="Number of animals on start: ">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Spinner fx:id="animalsSpinner" prefWidth="100">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="20"/>
+                            </valueFactory>
+                        </Spinner>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </HBox.margin>
+                    <children>
+                        <Label text="Number of plants on start: ">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Spinner fx:id="plantsSpinner" prefWidth="100">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="20"/>
+                            </valueFactory>
+                        </Spinner>
+                    </children>
+                </HBox>
+                <Button text="Start" onAction="#handleStartButton">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>

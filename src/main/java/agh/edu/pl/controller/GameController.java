@@ -5,6 +5,7 @@ import agh.edu.pl.executable.DataProvider;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -58,16 +59,23 @@ public class GameController {
     }
 
     public void initGridPane(){
-        int size = Math.min(dataProvider.getMapSizeX(), dataProvider.getMapSizeY());
+        int size = Math.max(dataProvider.getMapSizeX(), dataProvider.getMapSizeY());
         this.entitySize = 700.0/ size;
 
-        for(int i = 0; i< size; i++){
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setPrefWidth(entitySize);
-            gridPane.getColumnConstraints().add(columnConstraints);
+        gridPane.setMaxHeight(((double)700/size)*dataProvider.getMapSizeY());
+        gridPane.setMaxWidth(((double)700/size)*dataProvider.getMapSizeX());
 
+        for(int i=0; i<dataProvider.getMapSizeX(); i++){
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setMaxWidth(entitySize);
+            columnConstraints.setMinWidth(entitySize);
+            gridPane.getColumnConstraints().add(columnConstraints);
+        }
+
+        for(int i=0; i<dataProvider.getMapSizeY(); i++){
             RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setPrefHeight(entitySize);
+            rowConstraints.setMaxHeight(entitySize);
+            rowConstraints.setMinHeight(entitySize);
             gridPane.getRowConstraints().add(rowConstraints);
         }
 
@@ -77,6 +85,7 @@ public class GameController {
                     Rectangle rectangle = new Rectangle(entitySize, entitySize);
                     rectangle.setFill(Color.LIGHTGREEN);
                     GridPane.setHalignment(rectangle, HPos.CENTER);
+                    GridPane.setValignment(rectangle, VPos.CENTER);
                     gridPane.add(rectangle, x, y);
                 }
             }
@@ -92,6 +101,7 @@ public class GameController {
         dataProvider.getOccupiedPositions().forEach(point -> {
             Circle circle = new Circle(entitySize/3);
             GridPane.setHalignment(circle, HPos.CENTER);
+            GridPane.setValignment(circle, VPos.CENTER);
             nodes.add(circle);
             gridPane.add(circle, point.getX(), point.getY());
 
@@ -101,6 +111,7 @@ public class GameController {
                 Text text = new Text(Integer.toString(animals.size()));
                 text.setFont(Font.font("Verdana", entitySize/3));
                 GridPane.setHalignment(text, HPos.CENTER);
+                GridPane.setValignment(text, VPos.CENTER);
                 nodes.add(text);
                 gridPane.add(text, point.getX(), point.getY());
             }
@@ -120,6 +131,7 @@ public class GameController {
             Rectangle rectangle = new Rectangle(entitySize, entitySize);
             rectangle.setFill(Color.GREEN);
             GridPane.setHalignment(rectangle, HPos.CENTER);
+            GridPane.setValignment(rectangle, VPos.CENTER);
             nodes.add(rectangle);
             gridPane.add(rectangle, point.getX(), point.getY());
         });
@@ -140,5 +152,9 @@ public class GameController {
         };
 
         animationTimer.start();
+    }
+
+    public void stop(){
+        animationTimer.stop();
     }
 }

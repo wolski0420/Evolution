@@ -1,10 +1,6 @@
 package agh.edu.pl;
 
-import agh.edu.pl.controller.GameController;
-import agh.edu.pl.executable.Creator;
-import agh.edu.pl.executable.DataProvider;
-import agh.edu.pl.geography.Zone;
-import agh.edu.pl.world.World;
+import agh.edu.pl.controller.StartController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,27 +19,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GameController.class.getResource("../../../../view/gameView.fxml"));
+            loader.setLocation(StartController.class.getResource("../../../../view/startView.fxml"));
             BorderPane layout = loader.load();
 
-            Zone jungle = Creator.createJungle();
-            Zone territory = Creator.createMap(jungle);
-            World world = Creator.createWorld(territory);
-            world.init(20,20);
-            DataProvider dataProvider = new DataProvider(
-                    world, territory, jungle
-            );
-
-            GameController controller = loader.getController();
-            controller.setDataProvider(dataProvider);
+            StartController controller = loader.getController();
 
             Scene scene = new Scene(layout);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Evolution");
-            primaryStage.minWidthProperty().bind(layout.minWidthProperty());
-            primaryStage.minHeightProperty().bind(layout.minHeightProperty());
-            primaryStage.maxWidthProperty().bind(layout.maxWidthProperty());
-            primaryStage.maxHeightProperty().bind(layout.maxHeightProperty());
+            primaryStage.setOnCloseRequest(event -> controller.closeAllStages());
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
