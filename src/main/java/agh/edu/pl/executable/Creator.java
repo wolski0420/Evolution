@@ -13,7 +13,6 @@ import com.google.gson.stream.JsonReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-// @TODO package access + createWorld refactor => tests refactor
 public class Creator {
     private static Input input = null;
 

@@ -132,8 +132,8 @@ public class World extends Observable implements IWorldService{
                 .collect(Collectors.toList());
     }
 
-    public ArrayList<Animal> getListOfAnimals() {
-        return listOfAnimals;
+    public ArrayListMultimap<Point, Animal> getMapOfAnimals() {
+        return mapOfAnimals;
     }
 
     public boolean isOccupied(Point point){
@@ -178,27 +178,4 @@ public class World extends Observable implements IWorldService{
             mapOfAnimals.get(key).forEach(System.out::println);
         });
     }
-
-    // @TODO move to data provider
-    public int getSizeX(){
-        return map.getLengthX();
-    }
-
-    public int getSizeY(){
-        return map.getLengthY();
-    }
-
-    public Set<Point> getOccupiedPositions(){
-        return mapOfAnimals.keySet();
-    }
-
-    public List<Animal> getAnimalsByPosition(Point position){
-        return mapOfAnimals.get(position);
-    }
-
-    public Set<Point> getOverGrownPositions(){
-        return map.getOverGrownPositions();
-    }
-
-
 }

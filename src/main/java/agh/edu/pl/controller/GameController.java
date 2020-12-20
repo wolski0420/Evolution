@@ -1,7 +1,7 @@
 package agh.edu.pl.controller;
 
 import agh.edu.pl.biology.Animal;
-import agh.edu.pl.world.World;
+import agh.edu.pl.executable.DataProvider;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
-    private World world;    // @TODO replace with data provider
-    private int size;
+    private DataProvider dataProvider;
     private double entitySize;
     private final List<Node> nodes = new ArrayList<>();
     private AnimationTimer animationTimer;
@@ -52,17 +51,17 @@ public class GameController {
         });
     }
 
-    public void setWorld(World world) {
-        this.world = world;
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
         initGridPane();
         execution();
     }
 
     public void initGridPane(){
-        this.size = Math.min(world.getSizeX(), world.getSizeY());
-        this.entitySize = 700.0/size;
+        int size = Math.min(dataProvider.getMapSizeX(), dataProvider.getMapSizeY());
+        this.entitySize = 700.0/ size;
 
-        for(int i=0; i<size; i++){
+        for(int i = 0; i< size; i++){
             ColumnConstraints columnConstraints = new ColumnConstraints();
             columnConstraints.setPrefWidth(entitySize);
             gridPane.getColumnConstraints().add(columnConstraints);
@@ -79,14 +78,14 @@ public class GameController {
         gridPane.getChildren().removeAll(nodes);
         nodes.clear();
 
-        world.getOccupiedPositions().forEach(point -> {
+        dataProvider.getOccupiedPositions().forEach(point -> {
             Circle circle = new Circle(entitySize/3);
             GridPane.setHalignment(circle, HPos.CENTER);
-            circle.setFill(Color.AQUA);
             nodes.add(circle);
             gridPane.add(circle, point.getX(), point.getY());
 
-            List<Animal> animals = world.getAnimalsByPosition(point);
+            List<Animal> animals = dataProvider.getAnimalsByPosition(point);
+
             if(animals.size() > 1){
                 Text text = new Text(Integer.toString(animals.size()));
                 text.setFont(Font.font("Verdana", entitySize/3));
@@ -94,19 +93,27 @@ public class GameController {
                 nodes.add(text);
                 gridPane.add(text, point.getX(), point.getY());
             }
-            else if(animals.size() == 1){
-                if(animals.get(0).getEnergy() <= animals.get(0).getCopulationEnergy()) circle.setFill(Color.RED);
-                else if(animals.get(0).getEnergy() <= animals.get(0).getCopulationEnergy()*2) circle.setFill(Color.ORANGE);
+
+            if(animals.size() >= 1){
+                double avgEnergy = dataProvider.getAverageEnergy(animals);
+                double avgCopulationEnergy = dataProvider.getAverageCopulationEnergy(animals);
+
+                if(avgEnergy <= 0) circle.setFill(Color.BLACK);
+                else if(avgEnergy <= avgCopulationEnergy) circle.setFill(Color.RED);
+                else if(avgEnergy <= avgCopulationEnergy*2) circle.setFill(Color.ORANGE);
+                else circle.setFill(Color.AQUA);
             }
         });
 
-        world.getOverGrownPositions().forEach(point -> {
+        dataProvider.getOverGrownPositions().forEach(point -> {
             Rectangle rectangle = new Rectangle(entitySize, entitySize);
             rectangle.setFill(Color.GREEN);
             GridPane.setHalignment(rectangle, HPos.CENTER);
             nodes.add(rectangle);
             gridPane.add(rectangle, point.getX(), point.getY());
         });
+
+
     }
 
     public void execution(){
@@ -116,7 +123,7 @@ public class GameController {
                 if(now - prevTime < sleepTime) return;
                 prevTime = now;
 
-                world.nextDay();
+                dataProvider.nextDay();
                 loadGridObjects();
             }
         };

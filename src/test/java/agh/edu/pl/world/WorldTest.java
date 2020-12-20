@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 
@@ -122,6 +123,7 @@ public class WorldTest {
         Animal animal2 = new Animal(world, point, 16, new Genom());
         Animal animal3 = new Animal(world, point, 12, new Genom());
         int size = 0, size1 = 0, size2 = 0, size3 = 0;
+        List<Animal> list = null;
 
         // when
         try{
@@ -131,6 +133,10 @@ public class WorldTest {
             Field field = World.class.getDeclaredField("mapOfAnimals");
             field.setAccessible(true);
             ArrayListMultimap<Point, Animal> map = (ArrayListMultimap<Point, Animal>) field.get(world);
+
+            Field field2 = World.class.getDeclaredField("listOfAnimals");
+            field2.setAccessible(true);
+            list = (List<Animal>) field2.get(world);
 
             size = map.size();
             map.put(point, animal1);
@@ -149,12 +155,11 @@ public class WorldTest {
             e.printStackTrace();
         }
 
-        ArrayList<Animal> list = world.getListOfAnimals();
-
         // then
         Assertions.assertEquals(0, size);
         Assertions.assertEquals(1, size1);
         Assertions.assertEquals(3, size2);
+        Assertions.assertNotNull(list);
         Assertions.assertNotNull(list.get(0));
         Assertions.assertEquals(5, list.get(0).getEnergy());
         Assertions.assertEquals(5, size3);
