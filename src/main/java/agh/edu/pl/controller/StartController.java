@@ -3,6 +3,7 @@ package agh.edu.pl.controller;
 import agh.edu.pl.executable.Creator;
 import agh.edu.pl.executable.DataProvider;
 import agh.edu.pl.geography.Zone;
+import agh.edu.pl.observation.Statistics;
 import agh.edu.pl.world.World;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +39,8 @@ public class StartController {
             DataProvider dataProvider = new DataProvider(
                     world, territory, jungle
             );
+            Statistics statistics = new Statistics(dataProvider);
+            world.addObserver(statistics);
 
             GameController controller = loader.getController();
             controller.setDataProvider(dataProvider);

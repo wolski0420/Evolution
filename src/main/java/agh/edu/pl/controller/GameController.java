@@ -2,12 +2,14 @@ package agh.edu.pl.controller;
 
 import agh.edu.pl.biology.Animal;
 import agh.edu.pl.executable.DataProvider;
+import agh.edu.pl.observation.Statistics;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -20,6 +22,7 @@ import java.util.List;
 
 public class GameController {
     private DataProvider dataProvider;
+    private Statistics statistics;
     private double entitySize;
     private final List<Node> nodes = new ArrayList<>();
     private AnimationTimer animationTimer;
@@ -31,6 +34,9 @@ public class GameController {
 
     @FXML
     public Button executionButton;
+
+    @FXML
+    public Label animalsNumberLabel;
 
     @FXML
     public void initialize(){
@@ -58,7 +64,12 @@ public class GameController {
         execution();
     }
 
-    public void initGridPane(){
+    public void setStatistics(Statistics statistics){
+        this.statistics = statistics;
+        initStatistics();
+    }
+
+    private void initGridPane(){
         int size = Math.max(dataProvider.getMapSizeX(), dataProvider.getMapSizeY());
         this.entitySize = 700.0/ size;
 
@@ -94,7 +105,7 @@ public class GameController {
         loadGridObjects();
     }
 
-    public void loadGridObjects(){
+    private void loadGridObjects(){
         gridPane.getChildren().removeAll(nodes);
         nodes.clear();
 
@@ -139,7 +150,7 @@ public class GameController {
 
     }
 
-    public void execution(){
+    private void execution(){
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -156,5 +167,9 @@ public class GameController {
 
     public void stop(){
         animationTimer.stop();
+    }
+
+    private void initStatistics(){
+//        animalsNumberLabel.textProperty().bind();
     }
 }

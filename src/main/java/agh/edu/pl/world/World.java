@@ -53,6 +53,8 @@ public class World extends Observable implements IWorldService{
             map.randPlant(mapOfAnimals.keySet());
         }
 
+//        updateAll();
+
         System.out.println("===================INIT====================");
         print();
     }
@@ -64,6 +66,8 @@ public class World extends Observable implements IWorldService{
         animalsEat();
         copulation();
         map.randPlant(mapOfAnimals.keySet());
+
+        updateAll();
 
         System.out.println("===================NEXTDAY==================");
         print();
@@ -134,6 +138,10 @@ public class World extends Observable implements IWorldService{
 
     public ArrayListMultimap<Point, Animal> getMapOfAnimals() {
         return mapOfAnimals;
+    }
+
+    public ArrayList<Animal> getListOfAnimals() {
+        return listOfAnimals;
     }
 
     public boolean isOccupied(Point point){

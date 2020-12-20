@@ -75,6 +75,10 @@ public class Animal implements Comparable<Animal>{
         return copulationEnergy;
     }
 
+    public Genom getGenom() {
+        return genom;
+    }
+
     private boolean canCopulate(){
         return energy >= copulationEnergy;
     }

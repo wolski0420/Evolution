@@ -4,9 +4,11 @@ import agh.edu.pl.biology.Animal;
 import agh.edu.pl.geography.Point;
 import agh.edu.pl.geography.Zone;
 import agh.edu.pl.world.World;
+import com.google.common.collect.Multimaps;
 import javafx.util.Pair;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +38,10 @@ public class DataProvider {
 
     public List<Animal> getAnimalsByPosition(Point position){
         return world.getMapOfAnimals().get(position);
+    }
+
+    public List<Animal> getAnimals(){
+        return world.getListOfAnimals();
     }
 
     public Set<Point> getOverGrownPositions(){
