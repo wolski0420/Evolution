@@ -60,7 +60,7 @@ public class GameController {
 
     public void initGridPane(){
         this.size = Math.min(world.getSizeX(), world.getSizeY());
-        this.entitySize = 800.0/size;
+        this.entitySize = 700.0/size;
 
         for(int i=0; i<size; i++){
             ColumnConstraints columnConstraints = new ColumnConstraints();
