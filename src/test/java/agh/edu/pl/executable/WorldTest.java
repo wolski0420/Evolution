@@ -4,6 +4,7 @@ import agh.edu.pl.biology.Animal;
 import agh.edu.pl.biology.Genom;
 import agh.edu.pl.geography.Point;
 import agh.edu.pl.geography.Zone;
+import agh.edu.pl.world.World;
 import com.google.common.collect.ArrayListMultimap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,32 +21,28 @@ public class WorldTest {
     @Test
     public void init(){
         // given
-        World world1 = new World(0,1,10,1,3, 0.5);
-        World world2 = new World(0,0,10,1,3, 0);
-        Zone map = null;
+        Zone map1 = Creator.createMap(1,2,0.5);
+        Zone map2 = Creator.createMap(1,1,0);
+        Creator.setEnergy(10,1,3);
+        World world1 = Creator.createWorld(map1);
+        World world2 = Creator.createWorld(map2);
 
         // when
         world1.init(0,2);
         world2.init(1,0);
-        try{
-            Field field = World.class.getDeclaredField("map");
-            field.setAccessible(true);
-            map = (Zone) field.get(world1);
-        } catch (NoSuchFieldException | IllegalAccessException e){
-            e.printStackTrace();
-        }
 
         // then
-        Assertions.assertNotNull(map);
-        Assertions.assertTrue(map.isOverGrown(new Point(0,0)));
-        Assertions.assertTrue(map.isOverGrown(new Point(0,1)));
+        Assertions.assertTrue(map1.isOverGrown(new Point(0,0)));
+        Assertions.assertTrue(map1.isOverGrown(new Point(0,1)));
         Assertions.assertTrue(world2.isOccupied(new Point(0,0)));
     }
 
     @Test
     public void removeCorpses(){
         // given
-        World world = new World(0,0,0,1,0, 0.5);
+        Creator.setEnergy(0,1,0);
+        Zone map = Creator.createMap(1,1,0.5);
+        World world = Creator.createWorld(map);
 
         // when
         world.init(1, 0);
@@ -64,7 +61,9 @@ public class WorldTest {
     @Test
     public void animalsEat(){
         // given
-        World world = new World(0,0,3,1,4, 0.5);
+        Creator.setEnergy(3,1,4);
+        Zone zone = Creator.createMap(1,1,0.5);
+        World world = Creator.createWorld(zone);
         Point point = new Point(0,0);
         Animal animal1 = new Animal(world, point, 3, new Genom());
         Animal animal2 = new Animal(world, point, 8, new Genom());
@@ -78,10 +77,6 @@ public class WorldTest {
             Field field = World.class.getDeclaredField("mapOfAnimals");
             field.setAccessible(true);
             ArrayListMultimap<Point, Animal> map = (ArrayListMultimap<Point, Animal>) field.get(world);
-
-            Field field2 = World.class.getDeclaredField("map");
-            field2.setAccessible(true);
-            Zone zone = (Zone) field2.get(world);
 
             map.put(point, animal1);
             method.invoke(world);
@@ -109,7 +104,9 @@ public class WorldTest {
     @Test
     public void copulation(){
         //given
-        World world = new World(0,0,4,1,3, 0.5);
+        Creator.setEnergy(4,1,3);
+        Zone zone = Creator.createMap(1,1,0.5);
+        World world = Creator.createWorld(zone);
         Point point = new Point(0,0);
         Animal animal1 = new Animal(world, point, 4, new Genom());
         Animal animal2 = new Animal(world, point, 16, new Genom());
@@ -124,10 +121,6 @@ public class WorldTest {
             Field field = World.class.getDeclaredField("mapOfAnimals");
             field.setAccessible(true);
             ArrayListMultimap<Point, Animal> map = (ArrayListMultimap<Point, Animal>) field.get(world);
-
-            Field field2 = World.class.getDeclaredField("listOfAnimals");
-            field2.setAccessible(true);
-            ArrayList<Animal> list = (ArrayList<Animal>) field2.get(world);
 
             size = map.size();
             map.put(point, animal1);
@@ -162,7 +155,9 @@ public class WorldTest {
     @Test
     public void getCorrectPosition(){
         // given
-        World world1 = new World(4,4,10,1,3, 0.25);
+        Creator.setEnergy(10,1,3);
+        Zone map = Creator.createMap(5,5,0.25);
+        World world1 = Creator.createWorld(map);
         Point point1 = new Point(-1,0);
         Point point2 = new Point(-1,-1);
         Point point3 = new Point(0,-1);
@@ -190,7 +185,9 @@ public class WorldTest {
     @Test
     public void getClosePosition(){
         // given
-        World world = new World(4,4,10,1,3, 0.25);
+        Creator.setEnergy(10,1,3);
+        Zone zone = Creator.createMap(5,5,0.25);
+        World world = Creator.createWorld(zone);
         Point point = new Point(2,2);
 
         // when
@@ -216,7 +213,9 @@ public class WorldTest {
     @Test
     public void changePosition(){
         // given
-        World world = new World(4,4,10,1,3, 0.25);
+        Creator.setEnergy(10,1,3);
+        Zone zone = Creator.createMap(5,5,0.25);
+        World world = Creator.createWorld(zone);
         Point location = new Point(1,1);
         Animal animal = new Animal(world, location, 5, mock(Genom.class));
 
@@ -230,7 +229,7 @@ public class WorldTest {
             e.printStackTrace();
         }
 
-        animal.move(2);
+        animal.move();
         world.changePosition(location, animal);
 
         // then

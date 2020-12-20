@@ -1,4 +1,4 @@
-package agh.edu.pl.executable;
+package agh.edu.pl.world;
 
 import agh.edu.pl.biology.Animal;
 import agh.edu.pl.geography.Point;
@@ -11,6 +11,4 @@ public interface IWorldService {
     void changePosition(Point oldPosition, Animal animal);
 
     void reportDeath(Animal animal);
-
-    int getMinCopulateEnergy();
 }

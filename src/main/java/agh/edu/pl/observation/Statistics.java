@@ -1,4 +1,4 @@
-package agh.edu.pl.executable;
+package agh.edu.pl.observation;
 
 import agh.edu.pl.biology.Animal;
 import agh.edu.pl.observation.IObserver;

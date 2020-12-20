@@ -1,6 +1,7 @@
-package agh.edu.pl.executable;
+package agh.edu.pl.world;
 
 import agh.edu.pl.biology.Animal;
+import agh.edu.pl.biology.Energy;
 import agh.edu.pl.biology.Orientation;
 import agh.edu.pl.geography.Jungle;
 import agh.edu.pl.geography.Point;
@@ -20,23 +21,14 @@ public class World extends Observable implements IWorldService{
     private final ArrayListMultimap<Point, Animal> mapOfAnimals;
     private final Random random;
     private final Zone map;
-    private final int startEnergy;
-    private final int moveEnergy;
-    private final int plantEnergy;
 
-    public World(int width, int height, int startEnergy, int moveEnergy, int plantEnergy, double jungleRatio) {
+    public World(Zone map) {
         this.bornAnimals = new ArrayList<>();
         this.deadAnimals = new ArrayList<>();
         this.listOfAnimals = new ArrayList<>();
         this.mapOfAnimals = ArrayListMultimap.create();
         this.random = new Random();
-        this.startEnergy = startEnergy;
-        this.moveEnergy = moveEnergy;
-        this.plantEnergy = plantEnergy;
-        this.map = new Territory(new Point(0,0), new Point(width,height), new Jungle(
-                new Point((int)(width * (1-jungleRatio)/2),(int)(height * (1-jungleRatio)/2)),
-                new Point((int)(width * (1+jungleRatio)/2),(int)(height * (1+jungleRatio)/2)))
-        );
+        this.map = map;
     }
 
     public void init(int animalsNumber, int plantsNumber){
@@ -48,7 +40,7 @@ public class World extends Observable implements IWorldService{
                     int y = random.nextInt(map.getLengthY());
                     Point newPoint = new Point(x, y);
                     if(!isOccupied(newPoint)){
-                        Animal animal = new Animal(this, newPoint, startEnergy);
+                        Animal animal = new Animal(this, newPoint);
                         listOfAnimals.add(animal);
                         mapOfAnimals.put(newPoint, animal);
                         finish = true;
@@ -91,14 +83,14 @@ public class World extends Observable implements IWorldService{
     }
 
     private void moveAnimals(){
-        listOfAnimals.forEach(animal -> animal.move(moveEnergy));
+        listOfAnimals.forEach(Animal::move);
     }
 
     private void animalsEat(){
         mapOfAnimals.keySet().forEach(key -> {
             if(map.isOverGrown(key)){
                 List<Animal> mostEnergeticAnimals = getStrongestAnimalsAtPosition(key);
-                mostEnergeticAnimals.forEach(animal -> animal.eat(plantEnergy/mostEnergeticAnimals.size()));
+                mostEnergeticAnimals.forEach(animal -> animal.eat(Energy.plantValue /mostEnergeticAnimals.size()));
                 map.removePlant(key);
             }
         });
@@ -177,11 +169,6 @@ public class World extends Observable implements IWorldService{
         deadAnimals.add(animal);
     }
 
-    @Override
-    public int getMinCopulateEnergy() {
-        return startEnergy/2;
-    }
-
     public void print(){
         System.out.println("---------------Plants-----------------");
         map.print();
@@ -192,7 +179,7 @@ public class World extends Observable implements IWorldService{
         });
     }
 
-    // @TODO refactor methods below
+    // @TODO move to data provider
     public int getSizeX(){
         return map.getLengthX();
     }
