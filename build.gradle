@@ -17,6 +17,7 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
     testCompile "org.mockito:mockito-core:2.+"
     testCompile group: 'org.powermock', name: 'powermock-mockito-release-full', version: '1.6.+', ext: 'pom'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 test {

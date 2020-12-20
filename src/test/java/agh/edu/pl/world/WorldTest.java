@@ -1,10 +1,12 @@
-package agh.edu.pl.executable;
+package agh.edu.pl.world;
 
 import agh.edu.pl.biology.Animal;
+import agh.edu.pl.biology.Energy;
 import agh.edu.pl.biology.Genom;
+import agh.edu.pl.geography.Jungle;
 import agh.edu.pl.geography.Point;
+import agh.edu.pl.geography.Territory;
 import agh.edu.pl.geography.Zone;
-import agh.edu.pl.world.World;
 import com.google.common.collect.ArrayListMultimap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,11 +23,13 @@ public class WorldTest {
     @Test
     public void init(){
         // given
-        Zone map1 = Creator.createMap(1,2,0.5);
-        Zone map2 = Creator.createMap(1,1,0);
-        Creator.setEnergy(10,1,3);
-        World world1 = Creator.createWorld(map1);
-        World world2 = Creator.createWorld(map2);
+        Zone map1 = new Territory(new Point(0,0), new Point(0, 1), new Jungle(new Point(0,0), new Point(0,0)));
+        Zone map2 = new Territory(new Point(0,0), new Point(0, 0));
+        Energy.startValue = 10;
+        Energy.moveValue = 1;
+        Energy.plantValue = 3;
+        World world1 = new World(map1);
+        World world2 = new World(map2);
 
         // when
         world1.init(0,2);
@@ -40,9 +44,11 @@ public class WorldTest {
     @Test
     public void removeCorpses(){
         // given
-        Creator.setEnergy(0,1,0);
-        Zone map = Creator.createMap(1,1,0.5);
-        World world = Creator.createWorld(map);
+        Energy.startValue = 0;
+        Energy.moveValue = 1;
+        Energy.plantValue = 0;
+        Zone map = new Territory(new Point(0,0), new Point(0, 0), new Jungle(new Point(0,0), new Point(0,0)));
+        World world = new World(map);
 
         // when
         world.init(1, 0);
@@ -61,9 +67,11 @@ public class WorldTest {
     @Test
     public void animalsEat(){
         // given
-        Creator.setEnergy(3,1,4);
-        Zone zone = Creator.createMap(1,1,0.5);
-        World world = Creator.createWorld(zone);
+        Energy.startValue = 3;
+        Energy.moveValue = 1;
+        Energy.plantValue = 4;
+        Zone zone = new Territory(new Point(0,0), new Point(0, 0), new Jungle(new Point(0,0), new Point(0,0)));
+        World world = new World(zone);
         Point point = new Point(0,0);
         Animal animal1 = new Animal(world, point, 3, new Genom());
         Animal animal2 = new Animal(world, point, 8, new Genom());
@@ -104,9 +112,11 @@ public class WorldTest {
     @Test
     public void copulation(){
         //given
-        Creator.setEnergy(4,1,3);
-        Zone zone = Creator.createMap(1,1,0.5);
-        World world = Creator.createWorld(zone);
+        Energy.startValue = 4;
+        Energy.moveValue = 1;
+        Energy.plantValue = 3;
+        Zone zone = new Territory(new Point(0,0), new Point(0, 0), new Jungle(new Point(0,0), new Point(0,0)));
+        World world = new World(zone);
         Point point = new Point(0,0);
         Animal animal1 = new Animal(world, point, 4, new Genom());
         Animal animal2 = new Animal(world, point, 16, new Genom());
@@ -155,9 +165,11 @@ public class WorldTest {
     @Test
     public void getCorrectPosition(){
         // given
-        Creator.setEnergy(10,1,3);
-        Zone map = Creator.createMap(5,5,0.25);
-        World world1 = Creator.createWorld(map);
+        Energy.startValue = 10;
+        Energy.moveValue = 1;
+        Energy.plantValue = 3;
+        Zone map = new Territory(new Point(0,0), new Point(4, 4), new Jungle(new Point(2,2), new Point(3,3)));
+        World world1 = new World(map);
         Point point1 = new Point(-1,0);
         Point point2 = new Point(-1,-1);
         Point point3 = new Point(0,-1);
@@ -185,9 +197,11 @@ public class WorldTest {
     @Test
     public void getClosePosition(){
         // given
-        Creator.setEnergy(10,1,3);
-        Zone zone = Creator.createMap(5,5,0.25);
-        World world = Creator.createWorld(zone);
+        Energy.startValue = 10;
+        Energy.moveValue = 1;
+        Energy.plantValue = 3;
+        Zone zone = new Territory(new Point(0,0), new Point(4, 4), new Jungle(new Point(2,2), new Point(3,3)));
+        World world = new World(zone);
         Point point = new Point(2,2);
 
         // when
@@ -213,9 +227,11 @@ public class WorldTest {
     @Test
     public void changePosition(){
         // given
-        Creator.setEnergy(10,1,3);
-        Zone zone = Creator.createMap(5,5,0.25);
-        World world = Creator.createWorld(zone);
+        Energy.startValue = 10;
+        Energy.moveValue = 1;
+        Energy.plantValue = 3;
+        Zone zone = new Territory(new Point(0,0), new Point(4, 4), new Jungle(new Point(2,2), new Point(3,3)));
+        World world = new World(zone);
         Point location = new Point(1,1);
         Animal animal = new Animal(world, location, 5, mock(Genom.class));
 
