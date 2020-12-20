@@ -42,6 +42,8 @@ public class Animal implements Comparable<Animal>{
             location = iWorldService.getCorrectPosition(location.add(orientation.asUnitVector()));
             iWorldService.changePosition(oldPosition, this);
             this.energy -= Energy.moveValue;
+
+            if(!isAlive()) iWorldService.reportDeath(this);
         }
         else{
             iWorldService.reportDeath(this);
