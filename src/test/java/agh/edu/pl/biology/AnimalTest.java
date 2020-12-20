@@ -1,6 +1,6 @@
 package agh.edu.pl.biology;
 
-import agh.edu.pl.executable.World;
+import agh.edu.pl.world.World;
 import agh.edu.pl.geography.Point;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -89,11 +89,11 @@ public class AnimalTest {
             field.set(animal, start);
 
             animal.rotate();
-            animal.move(5);
+            animal.move();
             changed1 = (Point) field.get(animal);
 
             animal.rotate();
-            animal.move(5);
+            animal.move();
             changed2 = (Point) field.get(animal);
         } catch(NoSuchFieldException | IllegalAccessException e){
             e.printStackTrace();
@@ -101,7 +101,7 @@ public class AnimalTest {
 
         // then
         Assertions.assertEquals(new Point(1,1), changed1);
-        Assertions.assertEquals(new Point(1,1), changed2);
+        Assertions.assertEquals(new Point(0,1), changed2);
     }
 
     @Test
@@ -114,15 +114,15 @@ public class AnimalTest {
         Animal animal2 = new Animal(world, point, 12, genom);
 
         // when
-        when(world.getMinCopulateEnergy()).thenReturn(7);
         Animal newAnimal1 = Animal.copulate(animal1, animal2);
         Animal newAnimal2 = Animal.copulate(animal1, animal2);
 
         // then
         Assertions.assertNotNull(newAnimal1);
+        Assertions.assertNotNull(newAnimal2);
         Assertions.assertEquals(5, newAnimal1.getEnergy());
-        Assertions.assertNull(newAnimal2);
-        Assertions.assertEquals(6, animal1.getEnergy());
-        Assertions.assertEquals(9, animal2.getEnergy());
+        Assertions.assertEquals(3, newAnimal2.getEnergy());
+        Assertions.assertEquals(5, animal1.getEnergy());
+        Assertions.assertEquals(7, animal2.getEnergy());
     }
 }

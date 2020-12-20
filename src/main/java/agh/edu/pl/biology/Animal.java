@@ -1,11 +1,12 @@
 package agh.edu.pl.biology;
 
-import agh.edu.pl.executable.IWorldService;
+import agh.edu.pl.world.IWorldService;
 import agh.edu.pl.geography.Point;
 
 public class Animal implements Comparable<Animal>{
     private final IWorldService iWorldService;
     private final Genom genom;
+    private final int copulationEnergy;
     private Orientation orientation;
     private Point location;
     private int energy;
@@ -16,10 +17,11 @@ public class Animal implements Comparable<Animal>{
         this.orientation = Orientation.values()[genom.getRandomGene()];
         this.location = location;
         this.energy = energy;
+        this.copulationEnergy = energy/2;
     }
 
-    public Animal(IWorldService iWorldService, Point location, int energy){
-        this(iWorldService, location, energy, new Genom());
+    public Animal(IWorldService iWorldService, Point location){
+        this(iWorldService, location, Energy.startValue, new Genom());
     }
 
     public boolean isAlive(){
@@ -34,12 +36,12 @@ public class Animal implements Comparable<Animal>{
         orientation = orientation.rotate(genom.getRandomGene());
     }
 
-    public void move(int costEnergy){
+    public void move(){
         if(isAlive()){
             Point oldPosition = location;
             location = iWorldService.getCorrectPosition(location.add(orientation.asUnitVector()));
             iWorldService.changePosition(oldPosition, this);
-            this.energy -= costEnergy;
+            this.energy -= Energy.moveValue;
         }
         else{
             iWorldService.reportDeath(this);
@@ -67,8 +69,12 @@ public class Animal implements Comparable<Animal>{
         return energy;
     }
 
+    public int getCopulationEnergy() {
+        return copulationEnergy;
+    }
+
     private boolean canCopulate(){
-        return energy >= iWorldService.getMinCopulateEnergy();
+        return energy >= copulationEnergy;
     }
 
     @Override

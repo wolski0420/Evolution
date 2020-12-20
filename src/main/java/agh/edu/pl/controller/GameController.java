@@ -1,7 +1,7 @@
 package agh.edu.pl.controller;
 
 import agh.edu.pl.biology.Animal;
-import agh.edu.pl.executable.World;
+import agh.edu.pl.world.World;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
-    private World world;
+    private World world;    // @TODO replace with data provider
     private int size;
     private double entitySize;
     private final List<Node> nodes = new ArrayList<>();
@@ -95,8 +95,8 @@ public class GameController {
                 gridPane.add(text, point.getX(), point.getY());
             }
             else if(animals.size() == 1){
-                if(animals.get(0).getEnergy() <= world.getMinCopulateEnergy()) circle.setFill(Color.RED);
-                else if(animals.get(0).getEnergy() <= world.getMinCopulateEnergy()*2) circle.setFill(Color.ORANGE);
+                if(animals.get(0).getEnergy() <= animals.get(0).getCopulationEnergy()) circle.setFill(Color.RED);
+                else if(animals.get(0).getEnergy() <= animals.get(0).getCopulationEnergy()*2) circle.setFill(Color.ORANGE);
             }
         });
 

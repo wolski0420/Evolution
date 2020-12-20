@@ -1,7 +1,9 @@
 package agh.edu.pl;
 
 import agh.edu.pl.controller.GameController;
-import agh.edu.pl.executable.World;
+import agh.edu.pl.executable.Creator;
+import agh.edu.pl.geography.Zone;
+import agh.edu.pl.world.World;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,7 +20,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        World world = new World(8, 8, 40,1, 5, 0.5);
+//        World world = new World(8, 8, 40,1, 5, 0.5);
+        Creator.setEnergy(40,1,5);
+        Zone map = Creator.createMap(8,8,0.5);
+        World world = Creator.createWorld(map);
         world.init(20,20);
 
         try{
