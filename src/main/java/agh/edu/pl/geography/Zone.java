@@ -18,6 +18,14 @@ public abstract class Zone {
         this.random = new Random();
     }
 
+    public Point getRightUpperCorner() {
+        return rightUpperCorner;
+    }
+
+    public Point getLeftLowerCorner() {
+        return leftLowerCorner;
+    }
+
     public int getLengthX(){
         return rightUpperCorner.getX() - leftLowerCorner.getX() + 1;
     }

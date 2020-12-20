@@ -4,9 +4,12 @@ import agh.edu.pl.biology.Animal;
 import agh.edu.pl.geography.Point;
 import agh.edu.pl.geography.Zone;
 import agh.edu.pl.world.World;
+import javafx.util.Pair;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DataProvider {
     private final World world;
@@ -51,6 +54,12 @@ public class DataProvider {
                 .map(Animal::getCopulationEnergy)
                 .reduce(0, Integer::sum)
                 /animals.size();
+    }
+
+    public List<Pair<Point, Point>> getZonesBounds(){
+        return Arrays.stream(zones)
+                .map(zone -> new Pair<>(zone.getLeftLowerCorner(), zone.getRightUpperCorner()))
+                .collect(Collectors.toList());
     }
 
     public void nextDay(){

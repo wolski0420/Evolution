@@ -71,6 +71,17 @@ public class GameController {
             gridPane.getRowConstraints().add(rowConstraints);
         }
 
+        dataProvider.getZonesBounds().forEach(pair -> {
+            for(int x=pair.getKey().getX(); x<=pair.getValue().getX(); x++){
+                for(int y=pair.getKey().getY(); y<=pair.getValue().getY(); y++){
+                    Rectangle rectangle = new Rectangle(entitySize, entitySize);
+                    rectangle.setFill(Color.LIGHTGREEN);
+                    GridPane.setHalignment(rectangle, HPos.CENTER);
+                    gridPane.add(rectangle, x, y);
+                }
+            }
+        });
+
         loadGridObjects();
     }
 
