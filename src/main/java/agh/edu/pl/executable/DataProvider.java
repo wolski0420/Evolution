@@ -4,11 +4,9 @@ import agh.edu.pl.biology.Animal;
 import agh.edu.pl.geography.Point;
 import agh.edu.pl.geography.Zone;
 import agh.edu.pl.world.World;
-import com.google.common.collect.Multimaps;
 import javafx.util.Pair;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,27 +30,31 @@ public class DataProvider {
         return territory.getLengthY();
     }
 
-    public Set<Point> getOccupiedPositions(){
-        return world.getMapOfAnimals().keySet();
+    public Set<Point> getOverGrownPositions(){
+        return territory.getOverGrownPositions();
     }
 
-    public List<Animal> getAnimalsByPosition(Point position){
-        return world.getMapOfAnimals().get(position);
+    public Set<Point> getOccupiedPositions(){
+        return world.getMapOfAnimals().keySet();
     }
 
     public List<Animal> getAnimals(){
         return world.getListOfAnimals();
     }
 
-    public Set<Point> getOverGrownPositions(){
-        return territory.getOverGrownPositions();
+    public List<Animal> getDeadAnimals(){
+        return world.getDeadAnimals();
+    }
+
+    public List<Animal> getAnimalsByPosition(Point position){
+        return world.getMapOfAnimals().get(position);
     }
 
     public double getAverageEnergy(List<Animal> animals){
-        return (double) animals.stream()
-                .map(Animal::getEnergy)
-                .reduce(0, Integer::sum)
-                /animals.size();
+        return animals.stream()
+                .mapToInt(Animal::getEnergy)
+                .average()
+                .orElse(0);
     }
 
     public double getAverageCopulationEnergy(List<Animal> animals){
@@ -66,6 +68,10 @@ public class DataProvider {
         return Arrays.stream(zones)
                 .map(zone -> new Pair<>(zone.getLeftLowerCorner(), zone.getRightUpperCorner()))
                 .collect(Collectors.toList());
+    }
+
+    public int getEpochNumber(){
+        return world.getEpoch();
     }
 
     public void nextDay(){

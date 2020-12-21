@@ -44,6 +44,7 @@ public class StartController {
 
             GameController controller = loader.getController();
             controller.setDataProvider(dataProvider);
+            controller.setStatistics(statistics);
 
             Scene scene = new Scene(layout);
             Stage stage = new Stage();

@@ -28,15 +28,24 @@ public class GameController {
     private AnimationTimer animationTimer;
     private long prevTime = 0;
     private final long sleepTime = 1000000000;
-
     @FXML
     public GridPane gridPane;
-
     @FXML
     public Button executionButton;
-
+    @FXML
+    public Label epochNumberLabel;
     @FXML
     public Label animalsNumberLabel;
+    @FXML
+    public Label plantsNumberLabel;
+    @FXML
+    public Label dominantGeneLabel;
+    @FXML
+    public Label avgEnergyLabel;
+    @FXML
+    public Label avgLifeTimeLabel;
+    @FXML
+    public Label avgChildNumberLabel;
 
     @FXML
     public void initialize(){
@@ -170,6 +179,33 @@ public class GameController {
     }
 
     private void initStatistics(){
-//        animalsNumberLabel.textProperty().bind();
+        epochNumberLabel.textProperty().bind(
+                statistics.epochNumberProperty()
+                        .asString("Epoch: %d")
+        );
+        animalsNumberLabel.textProperty().bind(
+                statistics.actualAnimalsNumberProperty()
+                        .asString("Animals number: %d")
+        );
+        plantsNumberLabel.textProperty().bind(
+                statistics.actualPlantsNumberProperty()
+                        .asString("Plants number: %d")
+        );
+        dominantGeneLabel.textProperty().bind(
+                statistics.actualDominantGeneProperty()
+                        .asString("Dominant gene: %d")
+        );
+        avgEnergyLabel.textProperty().bind(
+                statistics.averageEnergyProperty()
+                        .asString("Average energy: %.2f")
+        );
+        avgLifeTimeLabel.textProperty().bind(
+                statistics.averageLifeTimeProperty()
+                        .asString("Average lifetime: %.2f epochs")
+        );
+        avgChildNumberLabel.textProperty().bind(
+                statistics.averageChildNumberProperty()
+                        .asString("Average children number: %.2f")
+        );
     }
 }

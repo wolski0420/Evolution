@@ -7,6 +7,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             stylesheets="css/map.css"
+
             fx:controller="agh.edu.pl.controller.GameController">
     <center>
         <HBox alignment="CENTER">
@@ -26,13 +27,64 @@
                     </opaqueInsets>
 
                     <children>
-                        <Button fx:id="executionButton">
+                        <HBox alignment="CENTER">
                             <VBox.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </VBox.margin>
-                        </Button>
-                        <Label fx:id="animalsNumberLabel">
 
+                            <Button fx:id="executionButton">
+                                <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </HBox.margin>
+                            </Button>
+
+                            <Label fx:id="epochNumberLabel" minWidth="-Infinity">
+                                <HBox.margin>
+                                    <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                </HBox.margin>
+                            </Label>
+                        </HBox>
+
+                        <Label text="Statistics for current epoch:" styleClass="bold-label" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="animalsNumberLabel" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="plantsNumberLabel" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="dominantGeneLabel" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="avgEnergyLabel" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="avgLifeTimeLabel" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="avgChildNumberLabel" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
                         </Label>
                     </children>
                 </VBox>

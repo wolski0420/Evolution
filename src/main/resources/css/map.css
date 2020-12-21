@@ -2,3 +2,7 @@
     -fx-grid-lines-visible: true;
     -fx-background-color: beige;
 }
+
+.bold-label{
+    -fx-font-weight: bold;
+}

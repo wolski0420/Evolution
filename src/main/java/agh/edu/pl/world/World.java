@@ -3,9 +3,7 @@ package agh.edu.pl.world;
 import agh.edu.pl.biology.Animal;
 import agh.edu.pl.biology.Energy;
 import agh.edu.pl.biology.Orientation;
-import agh.edu.pl.geography.Jungle;
 import agh.edu.pl.geography.Point;
-import agh.edu.pl.geography.Territory;
 import agh.edu.pl.geography.Zone;
 import agh.edu.pl.observation.Observable;
 import com.google.common.collect.ArrayListMultimap;
@@ -21,6 +19,7 @@ public class World extends Observable implements IWorldService{
     private final ArrayListMultimap<Point, Animal> mapOfAnimals;
     private final Random random;
     private final Zone map;
+    private int epoch;
 
     public World(Zone map) {
         this.bornAnimals = new ArrayList<>();
@@ -29,6 +28,7 @@ public class World extends Observable implements IWorldService{
         this.mapOfAnimals = ArrayListMultimap.create();
         this.random = new Random();
         this.map = map;
+        this.epoch = 0;
     }
 
     public void init(int animalsNumber, int plantsNumber){
@@ -66,6 +66,8 @@ public class World extends Observable implements IWorldService{
         animalsEat();
         copulation();
         map.randPlant(mapOfAnimals.keySet());
+        greaterAnimalsEpoch();
+        epoch++;
 
         updateAll();
 
@@ -130,6 +132,10 @@ public class World extends Observable implements IWorldService{
         bornAnimals.clear();
     }
 
+    private void greaterAnimalsEpoch(){
+        listOfAnimals.forEach(Animal::nextEpoch);
+    }
+
     private List<Animal> getStrongestAnimalsAtPosition(Point point){
         return mapOfAnimals.get(point).stream()
                 .filter(animal -> animal.getEnergy() == Collections.max(mapOfAnimals.get(point)).getEnergy())
@@ -142,6 +148,14 @@ public class World extends Observable implements IWorldService{
 
     public ArrayList<Animal> getListOfAnimals() {
         return listOfAnimals;
+    }
+
+    public ArrayList<Animal> getDeadAnimals() {
+        return deadAnimals;
+    }
+
+    public int getEpoch() {
+        return epoch;
     }
 
     public boolean isOccupied(Point point){

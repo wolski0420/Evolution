@@ -3,21 +3,28 @@ package agh.edu.pl.biology;
 import agh.edu.pl.world.IWorldService;
 import agh.edu.pl.geography.Point;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Animal implements Comparable<Animal>{
+    private final ArrayList<Animal> children;
     private final IWorldService iWorldService;
     private final Genom genom;
     private final int copulationEnergy;
     private Orientation orientation;
     private Point location;
     private int energy;
+    private int epochs;
 
     public Animal(IWorldService iWorldService, Point location, int energy, Genom genom) {
+        this.children = new ArrayList<>();
         this.iWorldService = iWorldService;
         this.genom = genom;
         this.orientation = Orientation.values()[genom.getRandomGene()];
         this.location = location;
         this.energy = energy;
         this.copulationEnergy = energy/2;
+        this.epochs = 0;
     }
 
     public Animal(IWorldService iWorldService, Point location){
@@ -60,7 +67,18 @@ public class Animal implements Comparable<Animal>{
 
         Point childLocation = animal1.iWorldService.getClosePosition(animal1.location);
         Genom childGenom = new Genom(animal1.genom, animal2.genom);
-        return new Animal(animal1.iWorldService, childLocation, childEnergy, childGenom);
+        Animal child = new Animal(animal1.iWorldService, childLocation, childEnergy, childGenom);
+        animal1.addChild(child);
+        animal2.addChild(child);
+        return child;
+    }
+
+    public void addChild(Animal child){
+        children.add(child);
+    }
+
+    public void nextEpoch(){
+        epochs++;
     }
 
     public Point getLocation() {
@@ -77,6 +95,14 @@ public class Animal implements Comparable<Animal>{
 
     public Genom getGenom() {
         return genom;
+    }
+
+    public int getEpochs() {
+        return epochs;
+    }
+
+    public List<Animal> getChildren() {
+        return children;
     }
 
     private boolean canCopulate(){
