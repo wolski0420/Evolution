@@ -74,9 +74,9 @@ public class WorldTest {
         Zone zone = new Territory(new Point(0,0), new Point(0, 0), new Jungle(new Point(0,0), new Point(0,0)));
         World world = new World(zone);
         Point point = new Point(0,0);
-        Animal animal1 = new Animal(world, point, 3, new Genom());
-        Animal animal2 = new Animal(world, point, 8, new Genom());
-        Animal animal3 = new Animal(world, point, 12, new Genom());
+        Animal animal1 = new Animal(world, point, 3, new Genom(), 0);
+        Animal animal2 = new Animal(world, point, 8, new Genom(), 0);
+        Animal animal3 = new Animal(world, point, 12, new Genom(), 0);
 
         // when
         try{
@@ -119,9 +119,9 @@ public class WorldTest {
         Zone zone = new Territory(new Point(0,0), new Point(0, 0), new Jungle(new Point(0,0), new Point(0,0)));
         World world = new World(zone);
         Point point = new Point(0,0);
-        Animal animal1 = new Animal(world, point, 4, new Genom());
-        Animal animal2 = new Animal(world, point, 16, new Genom());
-        Animal animal3 = new Animal(world, point, 12, new Genom());
+        Animal animal1 = new Animal(world, point, 4, new Genom(), 0);
+        Animal animal2 = new Animal(world, point, 16, new Genom(), 0);
+        Animal animal3 = new Animal(world, point, 12, new Genom(), 0);
         int size = 0, size1 = 0, size2 = 0, size3 = 0;
         List<Animal> list = null;
 
@@ -238,7 +238,7 @@ public class WorldTest {
         Zone zone = new Territory(new Point(0,0), new Point(4, 4), new Jungle(new Point(2,2), new Point(3,3)));
         World world = new World(zone);
         Point location = new Point(1,1);
-        Animal animal = new Animal(world, location, 5, mock(Genom.class));
+        Animal animal = new Animal(world, location, 5, mock(Genom.class), 0);
 
         // when
         try{

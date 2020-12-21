@@ -31,17 +31,41 @@
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </VBox.margin>
 
-                            <Button fx:id="executionButton">
+                            <Button fx:id="executionButton" minWidth="80">
                                 <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                 </HBox.margin>
                             </Button>
 
-                            <Label fx:id="epochNumberLabel" minWidth="-Infinity">
+                            <Label fx:id="epochNumberLabel" minWidth="-Infinity" styleClass="bold-label">
                                 <HBox.margin>
                                     <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
                                 </HBox.margin>
                             </Label>
+
+                            <Spinner fx:id="startEpochSpinner" prefWidth="50">
+                                <HBox.margin>
+                                    <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                                </HBox.margin>
+                                <valueFactory>
+                                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="999" initialValue="0"/>
+                                </valueFactory>
+                            </Spinner>
+
+                            <Button onAction="#handleSaveToFile" text="Save" minWidth="50">
+                                <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </HBox.margin>
+                            </Button>
+
+                            <Spinner fx:id="endEpochSpinner" prefWidth="50">
+                                <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </HBox.margin>
+                                <valueFactory>
+                                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="1000" initialValue="1"/>
+                                </valueFactory>
+                            </Spinner>
                         </HBox>
 
                         <Label text="Statistics for current epoch:" styleClass="bold-label" minWidth="-Infinity">
@@ -86,55 +110,129 @@
                             </VBox.margin>
                         </Label>
 
-                        <Label text="Specific information (choose animal from list below or on the map): "
-                               styleClass="bold-label" maxWidth="220" wrapText="true" textAlignment="CENTER">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
-                            </VBox.margin>
-                        </Label>
+                        <HBox alignment="CENTER">
+                            <opaqueInsets>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </opaqueInsets>
 
-                        <ListView fx:id="animalsListView" maxHeight="150" maxWidth="200">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </ListView>
+                            <children>
+                                <VBox alignment="CENTER">
+                                    <opaqueInsets>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </opaqueInsets>
 
-                        <Label fx:id="animalLabel" minWidth="-Infinity" text="Animal - at (-,-)" disable="true">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                    <children>
+                                        <Label text="Specific information for alive animals (choose animal from list below): "
+                                               styleClass="bold-label" maxWidth="220" wrapText="true" textAlignment="CENTER">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="animalGenesLabel" text="Genes: -" disable="true"
-                               maxWidth="230" wrapText="true" textAlignment="CENTER" alignment="CENTER">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <ListView fx:id="animalsListView" maxHeight="150" maxWidth="200">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </ListView>
 
-                        <Label fx:id="animalEnergyLabel" minWidth="-Infinity" text="Energy: -" disable="true">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="animalLabel" minWidth="-Infinity" text="Animal - at (-,-)" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="animalEpochsLabel" minWidth="-Infinity" text="Age: -" disable="true">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="animalGenesLabel" text="Genes: -" disable="true"
+                                               maxWidth="230" wrapText="true" textAlignment="CENTER" alignment="CENTER">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="animalChildrenLabel" minWidth="-Infinity" text="Children number: -" disable="true">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="animalEnergyLabel" minWidth="-Infinity" text="Energy: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="animalDescendantsLabel" minWidth="-Infinity" text="Descendants number: -" disable="true">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="animalEpochsLabel" minWidth="-Infinity" text="Age: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="animalChildrenLabel" minWidth="-Infinity" text="Children number: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="animalDescendantsLabel" minWidth="-Infinity" text="Descendants number: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                    </children>
+                                </VBox>
+
+                                <VBox alignment="CENTER">
+                                    <opaqueInsets>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </opaqueInsets>
+
+                                    <children>
+                                        <Label text="Specific information for dead animals (choose animal from list below): "
+                                               styleClass="bold-label" maxWidth="220" wrapText="true" textAlignment="CENTER">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <ListView fx:id="deadAnimalsListView" maxHeight="150" maxWidth="200">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </ListView>
+
+                                        <Label fx:id="deadAnimalLabel" minWidth="-Infinity" text="Animal -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="deadAnimalGenesLabel" text="Genes: -" disable="true"
+                                               maxWidth="230" wrapText="true" textAlignment="CENTER" alignment="CENTER">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="deadAnimalBornEpochLabel" minWidth="-Infinity" text="Born Epoch: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="deadAnimalDeadEpochsLabel" minWidth="-Infinity" text="Dead Epoch: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="deadAnimalChildrenLabel" minWidth="-Infinity" text="Children number: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="deadAnimalDescendantsLabel" minWidth="-Infinity" text="Descendants number: -" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
                     </children>
                 </VBox>
             </children>

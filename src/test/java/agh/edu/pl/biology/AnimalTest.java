@@ -17,9 +17,9 @@ public class AnimalTest {
         World world = Mockito.mock(World.class);
         Point point = Mockito.mock(Point.class);
         Genom genom = Mockito.mock(Genom.class);
-        Animal animal1 = new Animal(world, point, 0, genom);
-        Animal animal2 = new Animal(world, point, -1, genom);
-        Animal animal3 = new Animal(world, point, 1, genom);
+        Animal animal1 = new Animal(world, point, 0, genom, 0);
+        Animal animal2 = new Animal(world, point, -1, genom, 0);
+        Animal animal3 = new Animal(world, point, 1, genom, 0);
 
         // when
 
@@ -35,7 +35,7 @@ public class AnimalTest {
         World world = Mockito.mock(World.class);
         Point point = Mockito.mock(Point.class);
         Genom genom = Mockito.mock(Genom.class);
-        Animal animal = new Animal(world, point, 5, genom);
+        Animal animal = new Animal(world, point, 5, genom, 0);
 
         // when
         animal.eat(7);
@@ -50,7 +50,7 @@ public class AnimalTest {
         World world = Mockito.mock(World.class);
         Point point = Mockito.mock(Point.class);
         Genom genom = Mockito.mock(Genom.class);
-        Animal animal = new Animal(world, point, 5, genom);
+        Animal animal = new Animal(world, point, 5, genom, 0);
         Orientation start = null, changed = null;
 
         // when
@@ -76,7 +76,7 @@ public class AnimalTest {
         World world = Mockito.mock(World.class);
         Point point = Mockito.mock(Point.class);
         Genom genom = Mockito.mock(Genom.class);
-        Animal animal = new Animal(world, point, 5, genom);
+        Animal animal = new Animal(world, point, 5, genom, 0);
         Point start = new Point(0,0), changed1 = null, changed2 = null;
 
         // when
@@ -110,8 +110,8 @@ public class AnimalTest {
         World world = Mockito.mock(World.class);
         Point point = Mockito.mock(Point.class);
         Genom genom = new Genom();
-        Animal animal1 = new Animal(world, point, 8, genom);
-        Animal animal2 = new Animal(world, point, 12, genom);
+        Animal animal1 = new Animal(world, point, 8, genom, 0);
+        Animal animal2 = new Animal(world, point, 12, genom, 0);
 
         // when
         Animal newAnimal1 = Animal.copulate(animal1, animal2);

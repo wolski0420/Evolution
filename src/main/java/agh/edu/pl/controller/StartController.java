@@ -28,6 +28,7 @@ public class StartController {
     @FXML
     public void handleStartButton(){
         try{
+            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(GameController.class.getResource("../../../../view/gameView.fxml"));
             BorderPane layout = loader.load();
@@ -45,10 +46,10 @@ public class StartController {
             GameController controller = loader.getController();
             controller.setDataProvider(dataProvider);
             controller.setStatistics(statistics);
+            controller.setStage(stage);
             controller.startGenerator();
 
             Scene scene = new Scene(layout);
-            Stage stage = new Stage();
             stages.add(stage);
             stage.setScene(scene);
             stage.setTitle("Game " + counter++);

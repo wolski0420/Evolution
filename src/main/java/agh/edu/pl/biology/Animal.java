@@ -13,13 +13,14 @@ public class Animal implements Comparable<Animal>{
     private final IWorldService iWorldService;
     private final Genom genom;
     private final int copulationEnergy;
+    private final int startEpochNumber;
     private final int id;
     private Orientation orientation;
     private Point location;
     private int energy;
     private int epochs;
 
-    public Animal(IWorldService iWorldService, Point location, int energy, Genom genom) {
+    public Animal(IWorldService iWorldService, Point location, int energy, Genom genom, int startEpochNumber) {
         this.children = new ArrayList<>();
         this.iWorldService = iWorldService;
         this.genom = genom;
@@ -27,12 +28,13 @@ public class Animal implements Comparable<Animal>{
         this.location = location;
         this.energy = energy;
         this.copulationEnergy = energy/2;
+        this.startEpochNumber = startEpochNumber;
         this.epochs = 0;
         this.id = maxId++;
     }
 
     public Animal(IWorldService iWorldService, Point location){
-        this(iWorldService, location, Energy.startValue, new Genom());
+        this(iWorldService, location, Energy.startValue, new Genom(), 0);
     }
 
     public boolean isAlive(){
@@ -71,7 +73,8 @@ public class Animal implements Comparable<Animal>{
 
         Point childLocation = animal1.iWorldService.getClosePosition(animal1.location);
         Genom childGenom = new Genom(animal1.genom, animal2.genom);
-        Animal child = new Animal(animal1.iWorldService, childLocation, childEnergy, childGenom);
+        Animal child = new Animal(animal1.iWorldService, childLocation, childEnergy, childGenom,
+                animal1.startEpochNumber + animal1.getEpochs());
         animal1.addChild(child);
         animal2.addChild(child);
         return child;
@@ -103,6 +106,14 @@ public class Animal implements Comparable<Animal>{
 
     public int getEpochs() {
         return epochs;
+    }
+
+    public int getStartEpochNumber() {
+        return startEpochNumber;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public List<Animal> getChildren() {

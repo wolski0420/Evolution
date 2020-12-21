@@ -15,24 +15,36 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameController {
+    private final List<Node> nodes = new ArrayList<>();
+    private final long sleepTime = 1000000000;
+    private final Region selectionFrame = new Region();
+    private final FileChooser fileChooser = new FileChooser();
+    private Stage stage;
     private DataProvider dataProvider;
     private Statistics statistics;
     private double entitySize;
-    private final List<Node> nodes = new ArrayList<>();
     private AnimationTimer generator;
     private long prevTime = 0;
-    private final long sleepTime = 1000000000;
     @FXML
     public GridPane gridPane;
     @FXML
     public Button executionButton;
+    @FXML
+    public Spinner<Integer> startEpochSpinner;
+    @FXML
+    public Spinner<Integer> endEpochSpinner;
     @FXML
     public Label epochNumberLabel;
     @FXML
@@ -61,12 +73,28 @@ public class GameController {
     public Label animalChildrenLabel;
     @FXML
     public Label animalDescendantsLabel;
+    @FXML
+    public ListView<Animal> deadAnimalsListView;
+    @FXML
+    public Label deadAnimalLabel;
+    @FXML
+    public Label deadAnimalGenesLabel;
+    @FXML
+    public Label deadAnimalBornEpochLabel;
+    @FXML
+    public Label deadAnimalDeadEpochsLabel;
+    @FXML
+    public Label deadAnimalChildrenLabel;
+    @FXML
+    public Label deadAnimalDescendantsLabel;
 
     @FXML
     public void initialize(){
         setGenerator();
         setExecutionButton();
+        setSaveButton();
         setAnimalsView();
+        setDeadAnimalsView();
     }
 
     public void setDataProvider(DataProvider dataProvider) {
@@ -100,8 +128,6 @@ public class GameController {
                 for(int y=pair.getKey().getY(); y<=pair.getValue().getY(); y++){
                     Rectangle rectangle = new Rectangle(entitySize, entitySize);
                     rectangle.setFill(Color.LIGHTGREEN);
-                    GridPane.setHalignment(rectangle, HPos.CENTER);
-                    GridPane.setValignment(rectangle, VPos.CENTER);
                     gridPane.add(rectangle, x, y);
                 }
             }
@@ -120,6 +146,7 @@ public class GameController {
             GridPane.setValignment(circle, VPos.CENTER);
             nodes.add(circle);
             gridPane.add(circle, point.getX(), point.getY());
+            circle.setStyle("-fx-border-style: dotted");
 
             List<Animal> animals = dataProvider.getAnimalsByPosition(point);
 
@@ -179,6 +206,13 @@ public class GameController {
                 animalEpochsLabel.setDisable(false);
                 animalChildrenLabel.setDisable(false);
                 animalDescendantsLabel.setDisable(false);
+                deadAnimalsListView.setDisable(false);
+                deadAnimalLabel.setDisable(false);
+                deadAnimalGenesLabel.setDisable(false);
+                deadAnimalBornEpochLabel.setDisable(false);
+                deadAnimalDeadEpochsLabel.setDisable(false);
+                deadAnimalChildrenLabel.setDisable(false);
+                deadAnimalDescendantsLabel.setDisable(false);
             }
             else{
                 startGenerator();
@@ -191,6 +225,14 @@ public class GameController {
                 animalEpochsLabel.setDisable(true);
                 animalChildrenLabel.setDisable(true);
                 animalDescendantsLabel.setDisable(true);
+                deadAnimalsListView.setDisable(true);
+                deadAnimalLabel.setDisable(true);
+                deadAnimalGenesLabel.setDisable(true);
+                deadAnimalBornEpochLabel.setDisable(true);
+                deadAnimalDeadEpochsLabel.setDisable(true);
+                deadAnimalChildrenLabel.setDisable(true);
+                deadAnimalDescendantsLabel.setDisable(true);
+                deadAnimalsListView.getSelectionModel().clearSelection();
             }
         });
     }
@@ -205,6 +247,7 @@ public class GameController {
                 dataProvider.nextDay();
                 loadGridObjects();
                 loadAnimalsView();
+                loadDeadAnimalsView();
             }
         };
     }
@@ -254,6 +297,8 @@ public class GameController {
     }
 
     public void setAnimalsView(){
+        selectionFrame.setStyle("-fx-border-style: solid; -fx-border-width: 8; -fx-border-color: black;");
+
         animalsListView.setDisable(true);
         animalsListView.setCellFactory(lv -> new ListCell<>(){
             @Override
@@ -266,6 +311,8 @@ public class GameController {
 
         animalsListView.getSelectionModel().selectedItemProperty().addListener(
                 ((observable, oldValue, newValue) -> {
+                    gridPane.getChildren().remove(selectionFrame);
+
                     if(newValue == null){
                         animalLabel.setText("Animal - at (-,-)");
                         animalGenesLabel.setText("Genes: -");
@@ -281,6 +328,7 @@ public class GameController {
                         animalEpochsLabel.setText("Age: " + newValue.getEpochs());
                         animalChildrenLabel.setText("Children number: " + newValue.getChildren().size());
                         animalDescendantsLabel.setText("Descendants number: " + newValue.getDescendantsNumber());
+                        gridPane.add(selectionFrame, newValue.getLocation().getX(), newValue.getLocation().getY());
                     }
                 })
         );
@@ -289,5 +337,75 @@ public class GameController {
     public void loadAnimalsView(){
         animalsListView.getItems().clear();
         animalsListView.getItems().addAll(dataProvider.getAnimals());
+    }
+
+    public void setDeadAnimalsView(){
+        deadAnimalsListView.setDisable(true);
+        deadAnimalsListView.setCellFactory(lv -> new ListCell<>(){
+            @Override
+            protected void updateItem(Animal item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item != null)
+                    setText("Animal " + item.getId());
+            }
+        });
+
+        deadAnimalsListView.getSelectionModel().selectedItemProperty().addListener(
+                ((observable, oldValue, newValue) -> {
+                    if(newValue == null){
+                        deadAnimalLabel.setText("Animal -");
+                        deadAnimalGenesLabel.setText("Genes: -");
+                        deadAnimalBornEpochLabel.setText("Born Epoch: -");
+                        deadAnimalDeadEpochsLabel.setText("Dead Epoch: -");
+                        deadAnimalChildrenLabel.setText("Children number: -");
+                        deadAnimalDescendantsLabel.setText("Descendants number: -");
+                    }
+                    else{
+                        deadAnimalLabel.setText("Animal " + newValue.getId());
+                        deadAnimalGenesLabel.setText("Genom: " + Arrays.toString(newValue.getGenom().getGenes()));
+                        deadAnimalBornEpochLabel.setText("Born Epoch: " + newValue.getStartEpochNumber());
+                        deadAnimalDeadEpochsLabel.setText("Dead Epoch: " + (newValue.getStartEpochNumber() + newValue.getEpochs()));
+                        deadAnimalChildrenLabel.setText("Children number: " + newValue.getChildren().size());
+                        deadAnimalDescendantsLabel.setText("Descendants number: " + newValue.getDescendantsNumber());
+                    }
+                })
+        );
+    }
+
+    public void loadDeadAnimalsView(){
+        deadAnimalsListView.getItems().addAll(dataProvider.getDeadAnimals());
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+
+    public void setSaveButton(){
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+    }
+    
+    public void handleSaveToFile(){
+        File statisticsFile = fileChooser.showSaveDialog(stage);
+        if(statisticsFile == null) return;
+
+        try{
+            FileWriter fileWriter = new FileWriter(statisticsFile);
+
+            int start = startEpochSpinner.getValue();
+            int end = endEpochSpinner.getValue();
+
+            fileWriter.write(String.format("Average statistics for epochs range [%d,%d]:\n", start, end));
+            fileWriter.write(String.format("Number of animals = %.3f\n", statistics.getAverageAnimalsNumberHistory(start,end)));
+            fileWriter.write(String.format("Number of plants = %.3f\n", statistics.getAveragePlantsNumberHistory(start,end)));
+            fileWriter.write(String.format("Dominant gene = %.3f\n", statistics.getAverageDominantGeneHistory(start,end)));
+            fileWriter.write(String.format("Energy = %.3f\n", statistics.getAverageEnergyHistory(start,end)));
+            fileWriter.write(String.format("Lifetime (for dead only) = %.3f\n", statistics.getAverageLifetimeHistory(start,end)));
+            fileWriter.write(String.format("Number of children = %.3f\n", statistics.getAverageChildrenNumberHistory(start,end)));
+
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
