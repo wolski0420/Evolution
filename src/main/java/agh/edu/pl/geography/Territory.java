@@ -52,10 +52,4 @@ public class Territory extends Zone{
             }
         };
     }
-
-    public void print(){
-        System.out.println("=======" + getClass());
-        plants.forEach(System.out::println);
-        zones.forEach(Zone::print);
-    }
 }

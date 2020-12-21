@@ -70,9 +70,4 @@ public abstract class Zone {
     protected abstract boolean canPlant(Point point);
 
     public abstract boolean isOverGrown(Point point);
-
-    public void print(){
-        System.out.println("=======" + getClass());
-        plants.forEach(System.out::println);
-    }
 }

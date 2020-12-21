@@ -54,9 +54,6 @@ public class World extends Observable implements IWorldService{
         for(int i=0; i<plantsNumber/2; i++){
             map.randPlant(mapOfAnimals.keySet());
         }
-
-        System.out.println("===================INIT====================");
-        print();
     }
 
     public void nextDay(){
@@ -70,9 +67,6 @@ public class World extends Observable implements IWorldService{
         epoch++;
 
         updateAll();
-
-        System.out.println("===================NEXTDAY==================");
-        print();
     }
 
     private void removeCorpses(){
@@ -189,15 +183,5 @@ public class World extends Observable implements IWorldService{
     @Override
     public void reportDeath(Animal animal) {
         deadAnimals.add(animal);
-    }
-
-    public void print(){
-        System.out.println("---------------Plants-----------------");
-        map.print();
-        System.out.println("---------------Animals------------------");
-        mapOfAnimals.keySet().forEach(key -> {
-            System.out.println(key + ": ");
-            mapOfAnimals.get(key).forEach(System.out::println);
-        });
     }
 }

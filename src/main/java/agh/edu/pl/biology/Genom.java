@@ -93,8 +93,4 @@ public class Genom {
     public int[] getGenes() {
         return genes;
     }
-
-    public void print(){
-        System.out.println(Arrays.toString(genes));
-    }
 }
