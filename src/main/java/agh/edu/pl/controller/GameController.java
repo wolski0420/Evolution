@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GameController {
@@ -62,6 +63,8 @@ public class GameController {
     @FXML
     public ListView<Animal> animalsListView;
     @FXML
+    public ListView<Animal> dominatingAnimalsView;
+    @FXML
     public Label animalLabel;
     @FXML
     public Label animalGenesLabel;
@@ -94,6 +97,7 @@ public class GameController {
         setExecutionButton();
         setSaveButton();
         setAnimalsView();
+        setDominatingAnimalsView();
         setDeadAnimalsView();
     }
 
@@ -213,6 +217,7 @@ public class GameController {
                 deadAnimalDeadEpochsLabel.setDisable(false);
                 deadAnimalChildrenLabel.setDisable(false);
                 deadAnimalDescendantsLabel.setDisable(false);
+                dominatingAnimalsView.setDisable(false);
             }
             else{
                 startGenerator();
@@ -233,6 +238,8 @@ public class GameController {
                 deadAnimalChildrenLabel.setDisable(true);
                 deadAnimalDescendantsLabel.setDisable(true);
                 deadAnimalsListView.getSelectionModel().clearSelection();
+                dominatingAnimalsView.setDisable(true);
+                dominatingAnimalsView.getSelectionModel().clearSelection();
             }
         });
     }
@@ -248,6 +255,7 @@ public class GameController {
                 loadGridObjects();
                 loadAnimalsView();
                 loadDeadAnimalsView();
+                loadDominatingAnimalsView();
             }
         };
     }
@@ -337,6 +345,40 @@ public class GameController {
     public void loadAnimalsView(){
         animalsListView.getItems().clear();
         animalsListView.getItems().addAll(dataProvider.getAnimals());
+    }
+
+    public void setDominatingAnimalsView(){
+        dominatingAnimalsView.setCellFactory(lv -> new ListCell<>(){
+            @Override
+            protected void updateItem(Animal item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item != null)
+                    setText(item.toString());
+            }
+        });
+
+        dominatingAnimalsView.getSelectionModel().selectedItemProperty().addListener(
+                ((observable, oldValue, newValue) -> {
+                    animalsListView.getSelectionModel().select(newValue);
+                })
+        );
+    }
+
+    public void loadDominatingAnimalsView(){
+        dominatingAnimalsView.getItems().clear();
+        dominatingAnimalsView.getItems().addAll(
+                dataProvider.getAnimals().stream()
+                .filter(animal ->
+                        Arrays.stream(animal.getGenom().getGenes())
+                                .boxed()
+                                .collect(Collectors.groupingBy(num -> num, Collectors.counting()))
+                                .entrySet()
+                                .stream()
+                                .max(Map.Entry.comparingByValue())
+                                .get().getKey() == statistics.actualDominantGeneProperty().get()
+                )
+                .collect(Collectors.toList())
+        );
     }
 
     public void setDeadAnimalsView(){

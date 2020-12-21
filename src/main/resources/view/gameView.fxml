@@ -68,47 +68,84 @@
                             </Spinner>
                         </HBox>
 
-                        <Label text="Statistics for current epoch:" styleClass="bold-label" minWidth="-Infinity">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
-                            </VBox.margin>
-                        </Label>
+                        <HBox alignment="CENTER">
+                            <opaqueInsets>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </opaqueInsets>
 
-                        <Label fx:id="animalsNumberLabel" minWidth="-Infinity">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                            <children>
+                                <VBox alignment="CENTER">
+                                    <opaqueInsets>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </opaqueInsets>
 
-                        <Label fx:id="plantsNumberLabel" minWidth="-Infinity">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                    <children>
+                                        <Label text="Statistics for current epoch:" styleClass="bold-label" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="dominantGeneLabel" minWidth="-Infinity">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="animalsNumberLabel" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="avgEnergyLabel" minWidth="-Infinity">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="plantsNumberLabel" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="avgLifeTimeLabel" minWidth="-Infinity">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="dominantGeneLabel" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
 
-                        <Label fx:id="avgChildNumberLabel" minWidth="-Infinity">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
-                            </VBox.margin>
-                        </Label>
+                                        <Label fx:id="avgEnergyLabel" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="avgLifeTimeLabel" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <Label fx:id="avgChildNumberLabel" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                    </children>
+                                </VBox>
+
+                                <VBox alignment="CENTER">
+                                    <opaqueInsets>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </opaqueInsets>
+
+                                    <children>
+                                        <Label text="Animals with dominating gene:" styleClass="bold-label" minWidth="-Infinity">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
+                                            </VBox.margin>
+                                        </Label>
+
+                                        <ListView fx:id="dominatingAnimalsView" maxHeight="150"
+                                                  maxWidth="200" disable="true">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                            </VBox.margin>
+                                        </ListView>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
 
                         <HBox alignment="CENTER">
                             <opaqueInsets>
