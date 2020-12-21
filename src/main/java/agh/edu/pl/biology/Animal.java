@@ -5,12 +5,15 @@ import agh.edu.pl.geography.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Animal implements Comparable<Animal>{
+    private static int maxId = 0;
     private final ArrayList<Animal> children;
     private final IWorldService iWorldService;
     private final Genom genom;
     private final int copulationEnergy;
+    private final int id;
     private Orientation orientation;
     private Point location;
     private int energy;
@@ -25,6 +28,7 @@ public class Animal implements Comparable<Animal>{
         this.energy = energy;
         this.copulationEnergy = energy/2;
         this.epochs = 0;
+        this.id = maxId++;
     }
 
     public Animal(IWorldService iWorldService, Point location){
@@ -105,6 +109,12 @@ public class Animal implements Comparable<Animal>{
         return children;
     }
 
+    public int getDescendantsNumber(){
+        return children.size() + children.stream()
+                .mapToInt(Animal::getDescendantsNumber)
+                .sum();
+    }
+
     private boolean canCopulate(){
         return energy >= copulationEnergy;
     }
@@ -116,11 +126,6 @@ public class Animal implements Comparable<Animal>{
 
     @Override
     public String toString() {
-        return "Animal{" +
-                "genom=" + genom +
-                ", orientation=" + orientation +
-                ", location=" + location +
-                ", energy=" + energy +
-                '}';
+        return "Animal " + id + " at " + location;
     }
 }

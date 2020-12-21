@@ -45,13 +45,14 @@ public class StartController {
             GameController controller = loader.getController();
             controller.setDataProvider(dataProvider);
             controller.setStatistics(statistics);
+            controller.startGenerator();
 
             Scene scene = new Scene(layout);
             Stage stage = new Stage();
             stages.add(stage);
             stage.setScene(scene);
             stage.setTitle("Game " + counter++);
-            stage.setOnCloseRequest(event -> controller.stop());
+            stage.setOnCloseRequest(event -> controller.stopGenerator());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

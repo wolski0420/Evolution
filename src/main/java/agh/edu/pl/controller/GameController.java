@@ -8,8 +8,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,14 +17,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameController {
     private DataProvider dataProvider;
     private Statistics statistics;
     private double entitySize;
     private final List<Node> nodes = new ArrayList<>();
-    private AnimationTimer animationTimer;
+    private AnimationTimer generator;
     private long prevTime = 0;
     private final long sleepTime = 1000000000;
     @FXML
@@ -46,36 +47,31 @@ public class GameController {
     public Label avgLifeTimeLabel;
     @FXML
     public Label avgChildNumberLabel;
+    @FXML
+    public ListView<Animal> animalsListView;
+    @FXML
+    public Label animalLabel;
+    @FXML
+    public Label animalGenesLabel;
+    @FXML
+    public Label animalEnergyLabel;
+    @FXML
+    public Label animalEpochsLabel;
+    @FXML
+    public Label animalChildrenLabel;
+    @FXML
+    public Label animalDescendantsLabel;
 
     @FXML
     public void initialize(){
-        executionButton.setText("Stop");
-        executionButton.setCancelButton(true);
-        executionButton.setStyle("-fx-background-color: #fd2b2b");
-
-        executionButton.setOnAction(e -> {
-            if(executionButton.getText().equals("Stop")){
-                animationTimer.stop();
-                executionButton.setText("Start");
-                executionButton.setStyle("-fx-background-color: #00c700");
-            }
-            else{
-                animationTimer.start();
-                executionButton.setText("Stop");
-                executionButton.setStyle("-fx-background-color: #fd2b2b");
-            }
-        });
+        setGenerator();
+        setExecutionButton();
+        setAnimalsView();
     }
 
     public void setDataProvider(DataProvider dataProvider) {
         this.dataProvider = dataProvider;
         initGridPane();
-        execution();
-    }
-
-    public void setStatistics(Statistics statistics){
-        this.statistics = statistics;
-        initStatistics();
     }
 
     private void initGridPane(){
@@ -145,6 +141,13 @@ public class GameController {
                 else if(avgEnergy <= avgCopulationEnergy*2) circle.setFill(Color.ORANGE);
                 else circle.setFill(Color.AQUA);
             }
+
+            Tooltip tooltip = new Tooltip();
+            tooltip.setText(dataProvider.getAnimalsByPosition(point).stream()
+                    .map(animal -> Arrays.toString(animal.getGenom().getGenes()))
+                    .collect(Collectors.joining("\n"))
+            );
+            Tooltip.install(circle, tooltip);
         });
 
         dataProvider.getOverGrownPositions().forEach(point -> {
@@ -159,8 +162,41 @@ public class GameController {
 
     }
 
-    private void execution(){
-        animationTimer = new AnimationTimer() {
+    private void setExecutionButton(){
+        executionButton.setText("Stop");
+        executionButton.setCancelButton(true);
+        executionButton.setStyle("-fx-background-color: #fd2b2b");
+
+        executionButton.setOnAction(e -> {
+            if(executionButton.getText().equals("Stop")){
+                stopGenerator();
+                executionButton.setText("Start");
+                executionButton.setStyle("-fx-background-color: #00c700");
+                animalsListView.setDisable(false);
+                animalLabel.setDisable(false);
+                animalGenesLabel.setDisable(false);
+                animalEnergyLabel.setDisable(false);
+                animalEpochsLabel.setDisable(false);
+                animalChildrenLabel.setDisable(false);
+                animalDescendantsLabel.setDisable(false);
+            }
+            else{
+                startGenerator();
+                executionButton.setText("Stop");
+                executionButton.setStyle("-fx-background-color: #fd2b2b");
+                animalsListView.setDisable(true);
+                animalLabel.setDisable(true);
+                animalGenesLabel.setDisable(true);
+                animalEnergyLabel.setDisable(true);
+                animalEpochsLabel.setDisable(true);
+                animalChildrenLabel.setDisable(true);
+                animalDescendantsLabel.setDisable(true);
+            }
+        });
+    }
+
+    private void setGenerator(){
+        generator = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if(now - prevTime < sleepTime) return;
@@ -168,14 +204,22 @@ public class GameController {
 
                 dataProvider.nextDay();
                 loadGridObjects();
+                loadAnimalsView();
             }
         };
-
-        animationTimer.start();
     }
 
-    public void stop(){
-        animationTimer.stop();
+    public void startGenerator(){
+        generator.start();
+    }
+
+    public void stopGenerator(){
+        generator.stop();
+    }
+
+    public void setStatistics(Statistics statistics){
+        this.statistics = statistics;
+        initStatistics();
     }
 
     private void initStatistics(){
@@ -207,5 +251,43 @@ public class GameController {
                 statistics.averageChildNumberProperty()
                         .asString("Average children number: %.2f")
         );
+    }
+
+    public void setAnimalsView(){
+        animalsListView.setDisable(true);
+        animalsListView.setCellFactory(lv -> new ListCell<>(){
+            @Override
+            protected void updateItem(Animal item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item != null)
+                    setText(item.toString());
+            }
+        });
+
+        animalsListView.getSelectionModel().selectedItemProperty().addListener(
+                ((observable, oldValue, newValue) -> {
+                    if(newValue == null){
+                        animalLabel.setText("Animal - at (-,-)");
+                        animalGenesLabel.setText("Genes: -");
+                        animalEnergyLabel.setText("Energy: -");
+                        animalEpochsLabel.setText("Age: -");
+                        animalChildrenLabel.setText("Children number: -");
+                        animalDescendantsLabel.setText("Descendants number: -");
+                    }
+                    else{
+                        animalLabel.setText(newValue.toString());
+                        animalGenesLabel.setText("Genom: " + Arrays.toString(newValue.getGenom().getGenes()));
+                        animalEnergyLabel.setText("Energy: " + newValue.getEnergy());
+                        animalEpochsLabel.setText("Age: " + newValue.getEpochs());
+                        animalChildrenLabel.setText("Children number: " + newValue.getChildren().size());
+                        animalDescendantsLabel.setText("Descendants number: " + newValue.getDescendantsNumber());
+                    }
+                })
+        );
+    }
+
+    public void loadAnimalsView(){
+        animalsListView.getItems().clear();
+        animalsListView.getItems().addAll(dataProvider.getAnimals());
     }
 }

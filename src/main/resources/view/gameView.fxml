@@ -7,7 +7,6 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             stylesheets="css/map.css"
-
             fx:controller="agh.edu.pl.controller.GameController">
     <center>
         <HBox alignment="CENTER">
@@ -47,7 +46,7 @@
 
                         <Label text="Statistics for current epoch:" styleClass="bold-label" minWidth="-Infinity">
                             <VBox.margin>
-                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
                             </VBox.margin>
                         </Label>
 
@@ -82,6 +81,56 @@
                         </Label>
 
                         <Label fx:id="avgChildNumberLabel" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label text="Specific information (choose animal from list below or on the map): "
+                               styleClass="bold-label" maxWidth="220" wrapText="true" textAlignment="CENTER">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="25.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <ListView fx:id="animalsListView" maxHeight="150" maxWidth="200">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </ListView>
+
+                        <Label fx:id="animalLabel" minWidth="-Infinity" text="Animal - at (-,-)" disable="true">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="animalGenesLabel" text="Genes: -" disable="true"
+                               maxWidth="230" wrapText="true" textAlignment="CENTER" alignment="CENTER">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="animalEnergyLabel" minWidth="-Infinity" text="Energy: -" disable="true">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="animalEpochsLabel" minWidth="-Infinity" text="Age: -" disable="true">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="animalChildrenLabel" minWidth="-Infinity" text="Children number: -" disable="true">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Label fx:id="animalDescendantsLabel" minWidth="-Infinity" text="Descendants number: -" disable="true">
                             <VBox.margin>
                                 <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
                             </VBox.margin>

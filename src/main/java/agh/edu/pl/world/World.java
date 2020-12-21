@@ -7,6 +7,8 @@ import agh.edu.pl.geography.Point;
 import agh.edu.pl.geography.Zone;
 import agh.edu.pl.observation.Observable;
 import com.google.common.collect.ArrayListMultimap;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,8 +54,6 @@ public class World extends Observable implements IWorldService{
         for(int i=0; i<plantsNumber/2; i++){
             map.randPlant(mapOfAnimals.keySet());
         }
-
-//        updateAll();
 
         System.out.println("===================INIT====================");
         print();

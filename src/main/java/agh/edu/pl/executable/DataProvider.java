@@ -58,10 +58,10 @@ public class DataProvider {
     }
 
     public double getAverageCopulationEnergy(List<Animal> animals){
-        return (double) animals.stream()
-                .map(Animal::getCopulationEnergy)
-                .reduce(0, Integer::sum)
-                /animals.size();
+        return animals.stream()
+                .mapToInt(Animal::getCopulationEnergy)
+                .average()
+                .orElse(0);
     }
 
     public List<Pair<Point, Point>> getZonesBounds(){
